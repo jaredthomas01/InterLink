@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface ApplicationService {
     List<ApplicationEntity> getAllApplications();
     Optional<ApplicationEntity> getApplicationById(Long id);
-    ApplicationEntity saveApplication(ApplicationEntity application);
-    ApplicationEntity updateApplication(Long id, ApplicationEntity application);
+    ApplicationEntity saveApplication(ApplicationEntity applicationEntity);
+    ApplicationEntity updateApplication(Long id, ApplicationEntity applicationEntity);
     ApplicationEntity updateApplicationStatus(Long id, ApplicationStatus status);
     void deleteApplication(Long id);
 }

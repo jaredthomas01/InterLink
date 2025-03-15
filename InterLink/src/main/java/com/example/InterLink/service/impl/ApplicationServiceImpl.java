@@ -1,6 +1,7 @@
 package com.example.InterLink.service.impl;
 
 import com.example.InterLink.entity.ApplicationEntity;
+import com.example.InterLink.entity.ApplicationStatus;
 import com.example.InterLink.repository.ApplicationRepository;
 import com.example.InterLink.service.ApplicationService;
 import org.springframework.stereotype.Service;
@@ -37,6 +38,13 @@ public class ApplicationServiceImpl implements ApplicationService {
         return applicationRepository.findById(id).map(existingApp -> {
             existingApp.setStudent(applicationEntity.getStudent());
             existingApp.setPlacement(applicationEntity.getPlacement());
+            return applicationRepository.save(existingApp);
+        }).orElse(null);
+    }
+    @Override
+    public ApplicationEntity updateApplicationStatus(Long id, ApplicationStatus status) {
+        return applicationRepository.findById(id).map(existingApp -> {
+            existingApp.setStatus(status);
             return applicationRepository.save(existingApp);
         }).orElse(null);
     }
