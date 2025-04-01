@@ -54,7 +54,8 @@ import java.util.Optional;
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-        public ResponseEntity<ApplicationEntity> updateApplicationStatus(@PathVariable Long id, @RequestParam ApplicationStatus status) {
+    @PutMapping("/{id}/status")
+    public ResponseEntity<ApplicationEntity> updateApplicationStatus(@PathVariable Long id, @RequestParam ApplicationStatus status) {
             ApplicationEntity updatedApplication = applicationService.updateApplicationStatus(id, status);
             return updatedApplication != null ? new ResponseEntity<>(updatedApplication, HttpStatus.OK)
                     : new ResponseEntity<>(HttpStatus.NOT_FOUND);
