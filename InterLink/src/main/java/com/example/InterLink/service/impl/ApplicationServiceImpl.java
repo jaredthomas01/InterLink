@@ -33,6 +33,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         return applicationRepository.save(applicationEntity);
     }
 
+
     @Override
     public ApplicationEntity updateApplication(Long id, ApplicationEntity applicationEntity) {
         return applicationRepository.findById(id).map(existingApp -> {
