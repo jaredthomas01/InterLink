@@ -26,6 +26,22 @@ public class UserController {
         return userService.saveUser(userEntity);
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody UserEntity loginRequest) {
+        Optional<UserEntity> userOpt = userService.findByEmail(loginRequest.getEmail());
+
+        if (userOpt.isPresent()) {
+            UserEntity user = userOpt.get();
+            if (user.getPassword().equals(loginRequest.getPassword())) {
+                return ResponseEntity.ok(user);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<UserEntity> getUserById(@PathVariable Long id) {
         Optional<UserEntity> user = userService.getUserById(id);

@@ -10,5 +10,6 @@ public interface UserService {
     Optional<UserEntity> getUserById(Long id);
     UserEntity saveUser(UserEntity userEntity);
     UserEntity updateUser(Long id, UserEntity userEntity);
+    Optional<UserEntity> findByEmail(String email);
     void deleteUser(Long id);
 }
