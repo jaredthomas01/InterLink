@@ -3,6 +3,7 @@ package com.example.InterLink.service.impl;
 import com.example.InterLink.entity.UserEntity;
 import com.example.InterLink.repository.UserRepository;
 import com.example.InterLink.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,6 +47,12 @@ public class UserServiceImpl implements UserService {
             return userRepository.save(existingUser);
         }).orElse(null);
     }
+
+    @Override
+    public UserEntity login(String email, String password) {
+        return userRepository.findByEmailAndPassword(email, password).orElse(null);
+    }
+
 
     @Override
     public void deleteUser(Long id) {

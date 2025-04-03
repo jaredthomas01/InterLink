@@ -1,5 +1,6 @@
 package com.example.InterLink.controller;
 
+import com.example.InterLink.dto.LoginRequest;
 import com.example.InterLink.entity.UserEntity;
 import com.example.InterLink.service.EmailService;
 import com.example.InterLink.service.UserService;
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/auth")
+
+@RequestMapping("/users")
 public class AuthController {
 
     @Autowired
@@ -23,17 +25,56 @@ public class AuthController {
     @Autowired
     private VerificationService verificationService;
 
-    @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> payload) {
-        String email = payload.get("email");
-        Optional<UserEntity> userOpt = userService.findByEmail(email);
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        Optional<UserEntity> userOpt = userService.findByEmail(loginRequest.getEmail());
 
         if (userOpt.isPresent()) {
-            String code = verificationService.generateCodeForUser(email);
-//            emailService.sendVerificationCode(email, code);
-            return ResponseEntity.ok("Verification code sent.");
+            UserEntity user = userOpt.get();
+            if (user.getPassword().equals(loginRequest.getPassword())) {
+
+                // 👉 Role-based redirection suggestion:
+                String role = user.getRole().toString().toLowerCase();
+                String redirectUrl;
+
+                switch (role) {
+                    case "student":
+                        redirectUrl = "/student/dashboard";
+                        break;
+                    case "coordinator":
+                        redirectUrl = "/coordinator/dashboard";
+                        break;
+                    case "company representative":
+                        redirectUrl = "/company/dashboard";
+                        break;
+                    default:
+                        redirectUrl = "/unknown-role";
+                }
+
+                return ResponseEntity.ok().body(
+                        Map.of("message", "Login successful", "role", role, "redirect", redirectUrl)
+                );
+
+            } else {
+                return ResponseEntity.status(401).body("Invalid password");
+            }
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+            return ResponseEntity.status(404).body("User not found");
         }
     }
 }
+//
+//    @PostMapping("/forgot-password")
+//    public ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> payload) {
+//        String email = payload.get("email");
+//        Optional<UserEntity> userOpt = userService.findByEmail(email);
+//
+//        if (userOpt.isPresent()) {
+//            String code = verificationService.generateCodeForUser(email);
+////            emailService.sendVerificationCode(email, code);
+//            return ResponseEntity.ok("Verification code sent.");
+//        } else {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+//        }
+//    }
+//}

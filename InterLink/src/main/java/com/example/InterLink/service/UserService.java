@@ -11,5 +11,6 @@ public interface UserService {
     UserEntity saveUser(UserEntity userEntity);
     UserEntity updateUser(Long id, UserEntity userEntity);
     Optional<UserEntity> findByEmail(String email);
+    UserEntity login(String email, String password);
     void deleteUser(Long id);
 }
