@@ -28,7 +28,7 @@ public class PlacementController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping("/placements")
+    @PostMapping
     public ResponseEntity<PlacementEntity> createPlacement(@RequestBody PlacementEntity placement) {
         PlacementEntity savedPlacement = placementService.savePlacement(placement);
         return new ResponseEntity<>(savedPlacement, HttpStatus.CREATED);
