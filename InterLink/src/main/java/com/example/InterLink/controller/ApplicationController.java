@@ -14,8 +14,8 @@ import java.util.Optional;
 
 
 @RestController
-    @RequestMapping("/applications")
-    public class ApplicationController {
+         @RequestMapping("/applications")
+         public class ApplicationController {
 
         private final ApplicationService applicationService;
 
@@ -35,7 +35,18 @@ import java.util.Optional;
         return new ResponseEntity<>(applications, HttpStatus.OK);
     }
 
-        @GetMapping("/{id}")
+    @GetMapping("/check")
+    public ResponseEntity<Boolean> checkIfApplied(
+            @RequestParam Long studentId,
+            @RequestParam Long placementId) {
+
+        boolean exists = applicationService.applicationExists(studentId, placementId);
+        return ResponseEntity.ok(exists);
+    }
+
+
+
+    @GetMapping("/{id}")
         public ResponseEntity<ApplicationEntity> getApplicationById(@PathVariable Long id) {
             Optional<ApplicationEntity> application = applicationService.getApplicationById(id);
             return application.map(value -> new ResponseEntity<>(value, HttpStatus.OK))

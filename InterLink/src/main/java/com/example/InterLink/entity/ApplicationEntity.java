@@ -28,4 +28,115 @@ public class ApplicationEntity {
 
     @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
+
+    // Additional fields for detailed application
+    private String fullName;
+    private String regNo;
+    private String course;
+    private String university;
+    private String phone;
+
+    @Column(length = 3000)
+    private String coverLetter;
+
+    @Lob
+    private byte[] resumeFile;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public StudentEntity getStudent() {
+        return student;
+    }
+
+    public void setStudent(StudentEntity student) {
+        this.student = student;
+    }
+
+    public PlacementEntity getPlacement() {
+        return placement;
+    }
+
+    public void setPlacement(PlacementEntity placement) {
+        this.placement = placement;
+    }
+
+    public ApplicationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ApplicationStatus status) {
+        this.status = status;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getRegNo() {
+        return regNo;
+    }
+
+    public void setRegNo(String regNo) {
+        this.regNo = regNo;
+    }
+
+    public String getCourse() {
+        return course;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
+    public String getUniversity() {
+        return university;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getCoverLetter() {
+        return coverLetter;
+    }
+
+    public void setCoverLetter(String coverLetter) {
+        this.coverLetter = coverLetter;
+    }
+
+    public byte[] getResumeFile() {
+        return resumeFile;
+    }
+
+    public void setResumeFile(byte[] resumeFile) {
+        this.resumeFile = resumeFile;
+    }
+
+    public String getResumeFileName() {
+        return resumeFileName;
+    }
+
+    public void setResumeFileName(String resumeFileName) {
+        this.resumeFileName = resumeFileName;
+    }
+
+    private String resumeFileName;
 }

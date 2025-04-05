@@ -51,8 +51,15 @@ public class AuthController {
                         redirectUrl = "/unknown-role";
                 }
 
+                // ✅ Add ID to the response so frontend can store it
                 return ResponseEntity.ok().body(
-                        Map.of("message", "Login successful", "role", role, "redirect", redirectUrl)
+                        Map.of(
+                                "message", "Login successful",
+                                "id", user.getId(),
+                                "email", user.getEmail(),
+                                "role", role,
+                                "redirect", redirectUrl
+                        )
                 );
 
             } else {
@@ -62,6 +69,7 @@ public class AuthController {
             return ResponseEntity.status(404).body("User not found");
         }
     }
+
 }
 //
 //    @PostMapping("/forgot-password")

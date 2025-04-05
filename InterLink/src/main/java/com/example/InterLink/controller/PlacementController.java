@@ -21,16 +21,17 @@ public class PlacementController {
         this.placementService = placementService;
     }
 
-    @PostMapping
-    public PlacementEntity createPlacement(@RequestBody PlacementEntity placementEntity) {
-        return placementService.savePlacement(placementEntity);
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<PlacementEntity> getPlacementById(@PathVariable Long id) {
         Optional<PlacementEntity> placement = placementService.getPlacementById(id);
         return placement.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @PostMapping("/placements")
+    public ResponseEntity<PlacementEntity> createPlacement(@RequestBody PlacementEntity placement) {
+        PlacementEntity savedPlacement = placementService.savePlacement(placement);
+        return new ResponseEntity<>(savedPlacement, HttpStatus.CREATED);
     }
 
     @GetMapping

@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface ApplicationService {
     List<ApplicationEntity> getAllApplications();
+    boolean applicationExists(Long studentId, Long placementId);
     Optional<ApplicationEntity> getApplicationById(Long id);
     ApplicationEntity saveApplication(ApplicationEntity applicationEntity);
     ApplicationEntity updateApplication(Long id, ApplicationEntity applicationEntity);
