@@ -1,6 +1,7 @@
 package com.example.InterLink.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +22,9 @@ public class StudentEntity {
     private String name;
     private String registrationNumber;
 
-    @OneToOne
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnoreProperties({"user"})
     private UserEntity user;
 }

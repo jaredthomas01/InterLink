@@ -82,7 +82,31 @@ import java.util.Optional;
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error: " + e.getMessage());
         }
     }
-        @GetMapping("/{id}")
+
+    @GetMapping("/approved")
+    public ResponseEntity<List<ApplicationDTO>> getApprovedApplications() {
+        List<ApplicationDTO> result = applicationService.getAllApplications().stream()
+                .filter(app -> app.getStatus() == ApplicationStatus.APPROVED)
+                .map(app -> {
+                    ApplicationDTO dto = new ApplicationDTO();
+                    dto.setId(app.getId());
+                    dto.setCourse(app.getCourse());
+                    dto.setUniversity(app.getUniversity());
+                    dto.setPhone(app.getPhone());
+                    dto.setCoverLetter(app.getCoverLetter());
+                    dto.setResumeFileName(app.getResumeFileName());
+                    dto.setResumeDownloadUrl("http://localhost:8080/applications/" + app.getId() + "/resume");
+                    dto.setStatus(app.getStatus());
+                    dto.setStudentId(app.getStudent().getId());
+                    dto.setPlacementId(app.getPlacement().getId());
+                    return dto;
+                })
+                .toList();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
         public ResponseEntity<ApplicationEntity> getApplicationById(@PathVariable Long id) {
             Optional<ApplicationEntity> application = applicationService.getApplicationById(id);
             return application.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
