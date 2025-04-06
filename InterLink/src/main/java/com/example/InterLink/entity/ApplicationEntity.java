@@ -30,8 +30,6 @@ public class ApplicationEntity {
     private ApplicationStatus status;
 
     // Additional fields for detailed application
-    private String fullName;
-    private String regNo;
     private String course;
     private String university;
     private String phone;
@@ -72,22 +70,6 @@ public class ApplicationEntity {
 
     public void setStatus(ApplicationStatus status) {
         this.status = status;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getRegNo() {
-        return regNo;
-    }
-
-    public void setRegNo(String regNo) {
-        this.regNo = regNo;
     }
 
     public String getCourse() {
