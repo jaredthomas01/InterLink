@@ -3,6 +3,8 @@ package com.example.InterLink.controller;
 import com.example.InterLink.entity.ApplicationStatus;
 
 public class ApplicationDTO {
+    private String studentName;
+    private String registrationNumber;
     private Long id;
     private String course;
     private String university;
@@ -92,5 +94,21 @@ public class ApplicationDTO {
 
     public void setPlacementId(Long placementId) {
         this.placementId = placementId;
+    }
+
+    public String getStudentName() {
+        return studentName;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public String getRegistrationNumber() {
+        return registrationNumber;
+    }
+
+    public void setRegistrationNumber(String registrationNumber) {
+        this.registrationNumber = registrationNumber;
     }
 }

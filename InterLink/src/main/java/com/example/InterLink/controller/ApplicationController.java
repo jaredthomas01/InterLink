@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-
 @RestController
     @RequestMapping("/applications")
     public class ApplicationController {
@@ -89,6 +88,9 @@ import java.util.Optional;
                 .filter(app -> app.getStatus() == ApplicationStatus.APPROVED)
                 .map(app -> {
                     ApplicationDTO dto = new ApplicationDTO();
+                    dto.setStudentId(app.getStudent().getId());
+                    dto.setStudentName(app.getStudent().getName());
+                    dto.setRegistrationNumber(app.getStudent().getRegistrationNumber());
                     dto.setId(app.getId());
                     dto.setCourse(app.getCourse());
                     dto.setUniversity(app.getUniversity());
@@ -104,6 +106,64 @@ import java.util.Optional;
                 .toList();
 
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/approved/{id}")
+    public ResponseEntity<ApplicationDTO> getApprovedApplicationById(@PathVariable Long id) {
+        return applicationService.getApplicationById(id)
+                .filter(app -> app.getStatus() == ApplicationStatus.APPROVED)
+                .map(app -> {
+                    ApplicationDTO dto = new ApplicationDTO();
+                    dto.setStudentId(app.getStudent().getId());
+                    dto.setStudentName(app.getStudent().getName());
+                    dto.setRegistrationNumber(app.getStudent().getRegistrationNumber());
+                    dto.setId(app.getId());
+                    dto.setCourse(app.getCourse());
+                    dto.setUniversity(app.getUniversity());
+                    dto.setPhone(app.getPhone());
+                    dto.setCoverLetter(app.getCoverLetter());
+                    dto.setResumeFileName(app.getResumeFileName());
+                    dto.setResumeDownloadUrl("http://localhost:8080/applications/" + app.getId() + "/resume");
+                    dto.setStatus(app.getStatus());
+                    dto.setPlacementId(app.getPlacement().getId());
+                    return new ResponseEntity<>(dto, HttpStatus.OK);
+                })
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @DeleteMapping("/approved/{id}")
+    public ResponseEntity<Void> deleteApprovedApplication(@PathVariable Long id) {
+        Optional<ApplicationEntity> applicationOpt = applicationService.getApplicationById(id);
+        if (applicationOpt.isPresent() && applicationOpt.get().getStatus() == ApplicationStatus.APPROVED) {
+            applicationService.deleteApplication(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/approved/{id}")
+    public ResponseEntity<ApplicationEntity> updateApprovedApplication(@PathVariable Long id, @RequestBody ApplicationEntity updated) {
+        Optional<ApplicationEntity> applicationOpt = applicationService.getApplicationById(id);
+        if (applicationOpt.isPresent() && applicationOpt.get().getStatus() == ApplicationStatus.APPROVED) {
+            updated.setStatus(ApplicationStatus.APPROVED); // Ensure status stays approved
+            ApplicationEntity saved = applicationService.updateApplication(id, updated);
+            return new ResponseEntity<>(saved, HttpStatus.OK);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/resume")
+    public ResponseEntity<byte[]> downloadResume(@PathVariable Long id) {
+        Optional<ApplicationEntity> application = applicationService.getApplicationById(id);
+
+        if (application.isPresent() && application.get().getResumeFile() != null) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .header("Content-Disposition", "attachment; filename=\"" + application.get().getResumeFileName() + "\"")
+                    .body(application.get().getResumeFile());
+        }
+
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping("/{id}")
