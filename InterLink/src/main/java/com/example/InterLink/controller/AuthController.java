@@ -47,6 +47,10 @@ public class AuthController {
                     case "company representative":
                         redirectUrl = "/company/dashboard";
                         break;
+
+                    case "administrator":
+                        redirectUrl = "/admin/dashboard";
+                        break;
                     default:
                         redirectUrl = "/unknown-role";
                 }
