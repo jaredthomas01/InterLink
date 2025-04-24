@@ -33,6 +33,14 @@ public class CompanyController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    // ✅ NEW: Get company by associated userId
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<CompanyEntity> getCompanyByUserId(@PathVariable Long userId) {
+        Optional<CompanyEntity> company = companyService.getCompanyByUserId(userId);
+        return company.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @GetMapping
     public ResponseEntity<List<CompanyEntity>> getAllCompanies() {
         return new ResponseEntity<>(companyService.getAllCompanies(), HttpStatus.OK);

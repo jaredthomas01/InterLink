@@ -7,5 +7,7 @@ import java.util.Optional;
 
 public interface CompanyRepository extends JpaRepository<CompanyEntity, Long> {
     Optional<CompanyEntity> findByUser_Id(Long userId);
+    Optional<CompanyEntity> findByUserId(Long userId);
+
 
 }

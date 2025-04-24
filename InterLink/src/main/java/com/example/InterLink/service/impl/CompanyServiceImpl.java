@@ -34,6 +34,12 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public Optional<CompanyEntity> getCompanyByUserId(Long userId) {
+        return companyRepository.findByUserId(userId);
+    }
+
+
+    @Override
     public CompanyEntity saveCompany(CompanyEntity companyEntity) {
         if (companyEntity.getUser() == null || companyEntity.getUser().getId() == null) {
             throw new IllegalArgumentException("User ID cannot be null");
